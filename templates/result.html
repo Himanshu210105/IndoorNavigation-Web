@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="card">
+
+    <h2>🏢 Indoor Navigation Dashboard</h2>
+
+    <div class="stats">
+        <div class="stat-card">
+            <h3>{{ stats.rooms }}</h3>
+            <p>Detected Rooms</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>{{ stats.nodes }}</h3>
+            <p>Graph Nodes</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>{{ stats.edges }}</h3>
+            <p>Connections</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>{{ stats.path_length }}</h3>
+            <p>Path Length</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <h2>📍 Navigation Summary</h2>
+
+    <table class="summary-table">
+        <tr>
+            <th>Start Room</th>
+            <td>{{ start }}</td>
+        </tr>
+        <tr>
+            <th>Destination</th>
+            <td>{{ goal }}</td>
+        </tr>
+    </table>
+
+    <div class="path-panel">
+        <h3>Shortest Path</h3>
+        {% if path_found %}
+            <p class="path-text">{{ path | join(' → ') }}</p>
+        {% else %}
+            <p class="warning">{{ message }}</p>
+        {% endif %}
+    </div>
+
+    {% if navigation_steps and navigation_steps|length > 0 %}
+    <div class="steps-panel">
+        <h3>Navigation Instructions</h3>
+        <ol>
+            {% for step in navigation_steps %}
+            <li>{{ step }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <h2>🖼 Images</h2>
+
+    <div class="gallery">
+        <div class="gallery-item">
+            <h3>Original Image</h3>
+            <img src="{{ original }}" class="gallery-img" alt="Original Image">
+        </div>
+
+        <div class="gallery-item">
+            <h3>Room Detection</h3>
+            <img src="{{ prediction }}" class="gallery-img" alt="Room Detection">
+        </div>
+
+        <div class="gallery-item">
+            <h3>Navigation Result</h3>
+            {% if path_found %}
+                <img src="{{ image }}" class="gallery-img" alt="Navigation Result">
+            {% else %}
+                <div class="image-placeholder">No navigation path image available</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr>
+
+    <h2>📋 Detected Rooms</h2>
+
+    <div class="table-wrap">
+        <table class="data-table">
+            <tr>
+                <th>Room</th>
+                <th>Confidence</th>
+                <th>Center</th>
+                <th>Node</th>
+            </tr>
+
+            {% for room in rooms %}
+            <tr>
+                <td>{{ room.room }}</td>
+                <td>{{ "%.2f"|format(room.confidence*100) }}%</td>
+                <td>{{ room.center }}</td>
+                <td>{{ room.node }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="actions">
+        {% if path_found %}
+        <a href="{{ image }}" download>
+            <button type="button">⬇ Download Navigation Image</button>
+        </a>
+        {% endif %}
+        <a href="/">
+            <button type="button">🔄 New Navigation</button>
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

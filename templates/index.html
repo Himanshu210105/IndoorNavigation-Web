@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="card">
+
+    <h2>Upload Floor Plan</h2>
+    <p>Upload any building floor plan image to detect rooms and generate the navigation path.</p>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data" class="upload-form">
+        <input type="file" name="image" required>
+        <button type="submit">Upload & Detect Rooms</button>
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="card">
+
+    <h2>Select Navigation</h2>
+    <p>Choose the start room and destination from the detected room nodes.</p>
+
+    <form action="/navigate" method="POST" class="nav-form">
+
+        <label for="start">Start Room</label>
+        <select name="start" id="start" required>
+            {% for room in rooms %}
+            <option value="{{ room }}">{{ room }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="goal">Destination</label>
+        <select name="goal" id="goal" required>
+            {% for room in rooms %}
+            <option value="{{ room }}">{{ room }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Find Route</button>
+    </form>
+
+</div>
+
+{% endblock %}
